@@ -30,7 +30,41 @@ int main(int argc, char* argv[]) {
 
   //TODO   
  /* You can call the pathfinder function from here */
+ //make a graph
+ Graph fbGraph;
+ 
+ if (!loadFromFile(graph_filename)){
+     return 1;
+ }
+     ifstream infile(pairs_filename);
+    
+ while (infile) { 
+ 
+     //get each line in file
+     string pairs; 
+     if (!getline(infile, pairs)){
+         break;
+     }
 
+     //get each char in line
+     istringstream ss(pairs);
+     vector<string> record;
+     while (ss) {
+         string s;
+         if (!getline(ss, s, ' ')){
+	     break;
+	 }
+         record.push_back(s);
+      }
+      
+      if (record.size() != 2) {
+             continue;
+      }
+         //TODO
+ 
+ }
 
+     pathFinder()
+ 
     
 }  
