@@ -32,7 +32,7 @@ class Graph {
 
     ~Graph(void);
 
-    void insert(int n1, int n2)	;
+    void insert(int n1, int n2);
 
     bool loadFromFile(const char* in_filename);
 

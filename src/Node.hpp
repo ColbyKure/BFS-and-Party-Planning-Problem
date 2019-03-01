@@ -58,11 +58,11 @@ public:
         cout << "Finished printing " << name << endl;
     }
 
-    /* Prints Node Data to out (short version)*/
+    /* Prints Node Data to out num friends (short version)*/
     void peek(const unsigned int & num) {
         cout << "(name, done, dist, prev) == (" << name << ", " << done << ", " << dist << ", " << prev << ")\n";
         cout << "printing " << num << "/" << friends.size() << " many friends\n";
-        for(unsigned int i = 0; i < friends.size() | i < num; ++i) {
+        for(unsigned int i = 0; (i < friends.size() | i < num); ++i) {
             cout << "(" << i << ": " << friends[i] << ") ";
             if(i % 4 == 0) { cout << endl; }
         }

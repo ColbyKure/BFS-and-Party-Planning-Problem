@@ -45,8 +45,8 @@ void Graph::insert(int n1, int n2) {
     }
 
     //then add edges both directions
-    left.setFriends(n2);
-    right.setFriends(n1);
+    left->setFriends(n2);
+    right->setFriends(n1);
 
     ++numEdges;
 }
@@ -78,7 +78,9 @@ bool Graph::loadFromFile(const char* in_filename) {
             continue;
         }
 
-        bool in = insert(record[0], record[1]);
+        int n1 = strtol(record[0], nullptr, 10);
+        int n2 = strtol(record[1], nullptr, 10);
+        bool in = insert(n1, n2);
         if(!in) { cerr << "edge {" << record[0] << ", " << record[1] << "not inserted\n"; }
     }
 
