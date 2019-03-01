@@ -2,27 +2,43 @@
 #define GRAPH_HPP
 
 #include <iostream>
+#include <unordered_map>
+
+#include "Node.hpp"
 
 using namespace std;
 
+/**
+ *  A function class for the use as the compare class in the priority queue.
+ */
+class NodePtrComp {
+public:
+    bool operator()(Node *& n1, Node *& n2) const {
+        return *n1 < *n2;
+    }
+};
+
 class Graph {
  protected:
-  //MAYBE ADD CLASS DATA STRUCTURE(S) HERE
+    /* protected nember variables */
+    unordered_map<int, Node*> map;  // map of all nodes
 
  public:
-  Graph(void);
+    /* public member variables */
+    int size;                       // number of nodes
+    int numEdges;
 
-  ~Graph(void);
+    Graph(void);
 
-  //MAYBE ADD SOME MORE METHODS HERE SO AS TO ANSWER QUESTIONS IN YOUR PA
-	
-  /* YOU CAN MODIFY THIS IF YOU LIKE , in_filename : THE INPUT FILENAME */
+    ~Graph(void);
 
-  bool loadFromFile(const char* in_filename);
+    void insert(int n1, int n2)	;
 
-  bool pathfinder(Node* from, Node* to);
+    bool loadFromFile(const char* in_filename);
+
+    bool pathfinder(Node* from, Node* to);
     
-  void socialgathering(vector<string>& invitees, const int& k);
+    void socialgathering(vector<string>& invitees, const int& k);
 
 };
 
