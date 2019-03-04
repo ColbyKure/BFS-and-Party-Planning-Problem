@@ -6,24 +6,12 @@
 using namespace std;
 
 class Node {
-
-private: 
+public:
     bool done;              // visited node
     int name;               // id number for person
     int dist;               // dist from start
     Node * prev;            // prev node in path
     vector<int> friends;    // edges of graph
-
-    /*   Getter for dist.  */
-    int getDist(void) { return dist; }
-
-    /*   Getter for prev.  */
-    Node * getPrev(void) { return prev; }
-
-    /*   Getter for done.  */
-    bool isDone(void) { return done; }
-
-public:
 
     /* Constructor for Node. */
     Node(void) : done(false), dist(-1), prev(0) { }
@@ -32,14 +20,7 @@ public:
     ~Node(void) { }
 
     /* Setter for friends */
-    void setFriends(const vector<int> & newFriends) {
-        for(unsigned int i = 0; i < newFriends.size(); ++i) {
-            friends.push_back(newFriends[i]);
-        }
-    }
-
-    /* Setter for friends */
-    void setFriends(const int & newFriends) {
+    void setFriend(const int & newFriends) {
         friends.push_back(newFriends);
     }
 
@@ -62,7 +43,7 @@ public:
     void peek(const unsigned int & num) {
         cout << "(name, done, dist, prev) == (" << name << ", " << done << ", " << dist << ", " << prev << ")\n";
         cout << "printing " << num << "/" << friends.size() << " many friends\n";
-        for(unsigned int i = 0; (i < friends.size() | i < num); ++i) {
+        for(unsigned int i = 0; ((i < friends.size()) | (i < num)); ++i) {
             cout << "(" << i << ": " << friends[i] << ") ";
             if(i % 4 == 0) { cout << endl; }
         }

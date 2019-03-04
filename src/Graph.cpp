@@ -7,10 +7,10 @@
 #include <string>
 #include <utility>
 #include <unordered_map>
-#include <stack>
 #include <queue>
 
 #include "Graph.hpp"
+#include "Node.hpp"
 
 using namespace std;
 
@@ -31,8 +31,8 @@ Graph::~Graph(void) {
  **/
 void Graph::insert(int n1, int n2) {
     //find n1 and n2 in graph
-    Node * left = map[n1];
-    Node * right = map[n2];
+    Node * left = map[n1]; //TODO what if n1 not exisit?
+    Node * right = map[n2];//what does it return??
 
     //if not in graph make a new Node
     if(left == nullptr) {
@@ -45,8 +45,8 @@ void Graph::insert(int n1, int n2) {
     }
 
     //then add edges both directions
-    left->setFriends(n2);
-    right->setFriends(n1);
+    left->setFriend(n2);
+    right->setFriend(n1);
 
     ++numEdges;
 }
@@ -78,10 +78,9 @@ bool Graph::loadFromFile(const char* in_filename) {
             continue;
         }
 
-        int n1 = strtol(record[0], nullptr, 10);
-        int n2 = strtol(record[1], nullptr, 10);
-        bool in = insert(n1, n2);
-        if(!in) { cerr << "edge {" << record[0] << ", " << record[1] << "not inserted\n"; }
+        int n1 = strtol(record[0].c_str(), nullptr, 10);
+        int n2 = strtol(record[1].c_str(), nullptr, 10);
+        insert(n1, n2);
     }
 
     //if not end of file then throw error
@@ -104,16 +103,16 @@ bool Graph::loadFromFile(const char* in_filename) {
  **/
 bool Graph::pathfinder(Node* from, Node* to) {
     //null check 
-    if(from == nullptr | to == nullptr) {
+    if((from == nullptr) | (to == nullptr)) {
         cerr << "nullptr passed to pathfinder, exiting\n";
         return false;
     }
 
     //init all data in nodes
     for (auto iter : map) {
-        iter->second->done = false;
-        iter->second->prev = nullptr;
-        iter->second->dist = -1;
+        iter.second->done = false;
+        iter.second->prev = nullptr;
+        iter.second->dist = -1;
     }
 
     //base case from equals to
@@ -122,15 +121,15 @@ bool Graph::pathfinder(Node* from, Node* to) {
         return true;
     }
 
-    //create stack for BFS
-    stack<int> stack;
-    stack.push(from);
+    //create queue for BFS
+    queue<Node*> queue;
+    queue.push(from);
 
-    //loop while stack non-empty/visited_some
+    //loop while queue non-empty/visited_some
     Node * curr;
-    while (!stack.empty()) {
-        curr = stack.top()      // get next 
-        stack.pop();
+    while (!queue.empty()) {
+        curr = queue.front();      // get next 
+        queue.pop();
         for (int n : curr->friends) {
             //set data in non-visited nodes
             if (!map[n]->done) {
@@ -139,7 +138,7 @@ bool Graph::pathfinder(Node* from, Node* to) {
                 map[n]->dist = curr->dist + 1;
 
                 //is this the elem were looking for?
-                if (map[n]->second == to) {
+                if (map[n] == to) {
                     return true; //exit early
                 }
             }
@@ -158,41 +157,42 @@ bool Graph::pathfinder(Node* from, Node* to) {
 void Graph::socialgathering(vector<string>& invitees, const int& k) {
     //init data in all nodes
     for (auto iter : map) {
-        iter->second->done = false;
-        iter->second->prev = nullptr; //leaves this alone
-        iter->second->dist = -1;
+        iter.second->done = false;
+        iter.second->prev = nullptr; //leaves this alone
+        iter.second->dist = -1;
     }
 
     //base case k is more than size of invitees.
-    if (invitees.size() < k) {
+    if ((int)invitees.size() < k) {
         return; //no one new can go
     }
 
     //create priority queue
-    priority_queue<Node*, vector<Node*>, HCNodePtrComp> pq; 
+    priority_queue<Node*, vector<Node*>, NodePtrComp> pq; 
     //queue<int> que;
 
-    //add all invitees to pq mark done
+    //TODO
+    /*//add all invitees to pq mark done
     for (auto iter : invitees) {
         *iter->dist = k;        // dist = numPplKnown
         *iter->done = true;     // done == invited
         pq.push(*iter);
-    }
+    }*/
 
     //empty out pq updating graph data as you pop each node
     Node * curr;
     int numKnown;
     while (!pq.empty()) { 
-        curr = pq.top()      // get next 
+        curr = pq.top();      // get next 
         pq.pop();
         for (int n : curr->friends) {
-            if (!map[n]->second->done) {
-                numKnown = map[n]->second->dist;
-                map[n]->second->dist = ++numKnown;
+            if (!map[n]->done) {
+                numKnown = map[n]->dist;
+                map[n]->dist = ++numKnown;
                 if (numKnown == k) {
-                    map[n]->second->done = true;
+                    map[n]->done = true;
                     //TODO push map[n]->second to invitees
-                    pq.push(map[n]->second);
+                    pq.push(map[n]);
                 }
             }
         }
