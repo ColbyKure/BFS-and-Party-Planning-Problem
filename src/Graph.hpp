@@ -21,10 +21,10 @@ public:
 class Graph {
  protected:
     /* protected nember variables */
-    unordered_map<int, Node*> map;  // map of all nodes
 
  public:
     /* public member variables */
+    unordered_map<int, Node*> map;  // map of all nodes
     int size;                       // number of nodes
     int numEdges;
 
@@ -35,6 +35,8 @@ class Graph {
     void insert(int n1, int n2);
 
     bool loadFromFile(const char* in_filename);
+    
+    vector<int> getPath(Node* to);
 
     bool pathfinder(Node* from, Node* to);
     

@@ -95,6 +95,27 @@ bool Graph::loadFromFile(const char* in_filename) {
 }
 
 /**
+ * This functions find the path between 2 nodes. The function uses BFS to search
+ * the graph for paths. When the path is found the program saves the 
+ * path. Edges are not weighted. path not found write newline only.
+ *
+ * Returns the path.
+ **/
+vector<int> Graph::getPath(Node* to) {
+    vector<int> path;
+    Node * curr = to;
+    while(curr->dist){
+	path.push_back(curr->name);
+        curr = curr-> prev;
+    }
+    path.push_back(curr->name);
+    return path;
+}
+
+
+
+
+/**
  * This functions find a path between 2 nodes. The function uses BFS to search
  * the graph for paths. When the path is found the program exits and saves the 
  * path. Edges are not weighted. path not found write newline only.
