@@ -26,7 +26,7 @@ pathfinder: init $(addprefix $(OBJDIR)/,pathfinder.o Graph.o)
 socialgathering: init $(addprefix $(OBJDIR)/,socialgathering.o Graph.o)
 		$(CC) $(LDFLAGS) -o $(BUILDDIR)/$@ $(filter-out init,$^)
 
-$(OBJDIR)/%.o: $(SRCDIR)/%.cpp
+$(OBJDIR)/%.o: $(SRCDIR)/%.cpp $(SRCDIR)/*.hpp
 		$(CC) $(CXXFLAGS) -c -o $@ $<
 
 
