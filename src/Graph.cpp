@@ -31,22 +31,24 @@ Graph::~Graph(void) {
  **/
 void Graph::insert(int n1, int n2) {
     //find n1 and n2 in graph
-    Node * left = map[n1]; //TODO what if n1 not exisit?
-    Node * right = map[n2];//what does it return??
+    Node * left = map[n1];
+    Node * right = map[n2];
 
     //if not in graph make a new Node
     if(left == nullptr) {
-        left = new Node();
+        left = new Node(n1);
+        map[n1] = left;
         ++size;
     }
     if(right == nullptr) {
-        right = new Node();
+        right = new Node(n2);
+        map[n2] = right;
         ++size;
     }
 
     //then add edges both directions
-    left->setFriend(n2);
-    right->setFriend(n1);
+    left->addFriend(n2);
+    right->addFriend(n1);
 
     ++numEdges;
 }
@@ -59,6 +61,7 @@ void Graph::insert(int n1, int n2) {
  **/
 bool Graph::loadFromFile(const char* in_filename) {
     ifstream infile(in_filename);
+    infile.seekg(0, ios::beg);
     
     while (infile) { 
         //get each line in file
@@ -101,14 +104,15 @@ bool Graph::loadFromFile(const char* in_filename) {
  *
  * Returns the path.
  **/
-vector<int> Graph::getPath(Node* to) {
+vector<int> Graph::getPath(Node * from, Node* to) {
     vector<int> path;
     Node * curr = to;
-    while(curr->dist){
-	path.push_back(curr->name);
-        curr = curr-> prev;
+    while(true){
+	    path.push_back(curr->name);
+        if(curr->prev == from) break;
+        curr = curr->prev;
     }
-    path.push_back(curr->name);
+    path.push_back(from->name);
     return path;
 }
 
@@ -144,6 +148,10 @@ bool Graph::pathfinder(Node* from, Node* to) {
 
     //create queue for BFS
     queue<Node*> queue;
+
+    //start algorithm
+    from->done = true;
+    from->dist = 0;
     queue.push(from);
 
     //loop while queue non-empty/visited_some
@@ -162,6 +170,7 @@ bool Graph::pathfinder(Node* from, Node* to) {
                 if (map[n] == to) {
                     return true; //exit early
                 }
+                queue.push(map[n]);
             }
         }
     }

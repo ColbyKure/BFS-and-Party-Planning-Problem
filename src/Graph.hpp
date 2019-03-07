@@ -36,7 +36,7 @@ class Graph {
 
     bool loadFromFile(const char* in_filename);
     
-    vector<int> getPath(Node* to);
+    vector<int> getPath(Node * from, Node * to);
 
     bool pathfinder(Node* from, Node* to);
     

@@ -14,14 +14,16 @@ public:
     vector<int> friends;    // edges of graph
 
     /* Constructor for Node. */
-    Node(void) : done(false), dist(-1), prev(0) { }
+    Node(int id) : done(false), dist(-1), prev(0) {
+        name = id;
+    }
 
     /* Destructor for Node. */
     ~Node(void) { }
 
     /* Setter for friends */
-    void setFriend(const int & newFriends) {
-        friends.push_back(newFriends);
+    void addFriend(const int & newFriend) {
+        friends.push_back(newFriend);
     }
 
     /* Prints Node Data to out */

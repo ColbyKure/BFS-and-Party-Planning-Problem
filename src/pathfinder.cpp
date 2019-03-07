@@ -19,70 +19,69 @@ void usage(char* program_name) {
 
 int main(int argc, char* argv[]) {
 
-    if (argc != 4) {
-	usage(argv[0]);
+    if(argc != 4) {
+	    usage(argv[0]);
     }
-
 
     char* graph_filename = argv[1];
     char* pairs_filename = argv[2];
     char* output_filename = argv[3];
 
-    //TODO   
     /* You can call the pathfinder function from here */
     Graph fbGraph;
     ifstream infile(pairs_filename);
     ofstream out(output_filename);
 
     if (!fbGraph.loadFromFile(graph_filename)){
-	return -1;
+	    return -1;
     }
 
-    while (infile) { 
-
-	//get each line in file
-	string pairs; 
-	if (!getline(infile, pairs)){
-	    break;
-	}
-
-	//get each char in line
-	istringstream ss(pairs);
-	vector<string> record;
-	while (ss) {
-	    string s;
-	    if (!getline(ss, s, ' ')){
+    while(infile) { 
+	    //get each line in file
+	    string pairs; 
+	    if(!getline(infile, pairs)){
 	        break;
 	    }
-	    record.push_back(s);
-	}
 
-	if (record.size() != 2) {
-	    continue;
+	    //get each char in line
+	    istringstream ss(pairs);
+	    vector<string> record;
+	    while (ss) {
+	        string s;
+	        if (!getline(ss, s, ' ')){
+	            break;
+	        }
+	        record.push_back(s);
+
+	        if(record.size() != 2) {
+	            continue;
+            }
+
+            //found path to find
+            int num1 = strtol(record[0].c_str(), nullptr, 10);
+	        int num2 = strtol(record[1].c_str(), nullptr, 10);
+
+            cout << "(n1, n2)==(" << num1 << ", " << num2 << ")" << endl;
+
+    	    Node * from = fbGraph.map[num1]; 
+    	    Node * to = fbGraph.map[num2];
+	        //checks if there is an existing path
+    	    bool hasPath = fbGraph.pathfinder(from, to);
+
+	        if(!out.is_open()) {
+                cerr << output_filename << " not opened!\n";
+	            return -1;
+            }
+
+	        if(hasPath){
+	            vector<int> path = fbGraph.getPath(from, to);
+	            for (int i = path.size()-1; i >= 0; i--){
+	                out << path[i] << " ";
+	            }
+	        }
+	        out << endl;
         }
-        int num1 = strtol(record[0].c_str(), nullptr, 10);
-	int num2 = strtol(record[1].c_str(), nullptr, 10);
-
-    	Node * from = fbGraph.map[num1]; 
-    	Node * to = fbGraph.map[num2];
-	//checks if there is an existing path
-    	bool hasPath = fbGraph.pathfinder(from, to);
-
-	
-	if(!out.is_open()) {
-            cerr << output_filename << " not opened!\n";
-	    return -1;
-        }
-
-	if (hasPath != true){
-	    vector<int> path = fbGraph.getPath(to);
-	    for (int i = path.size(); i >= 0; i--){
-	        out << path[i] << " ";
-	    }
-	}
-	out << endl;
     }
-    
     //close files
     if(out.is_open()) {
         out.close();
