@@ -68,12 +68,9 @@ int main(int argc, char* argv[]) {
             //found path to find
             int num1 = strtol(record[0].c_str(), nullptr, 10);
 	        int num2 = strtol(record[1].c_str(), nullptr, 10);
-
-    	    Node * from = fbGraph.map[num1]; 
-    	    Node * to = fbGraph.map[num2];
-	    
+            
 	        //checks if there is an existing path
-    	    bool hasPath = fbGraph.pathfinder(from, to);
+    	    bool hasPath = fbGraph.pathfinder(num1, num2);
 
 	        if(!out.is_open()) {
                 cerr << output_filename << " not opened!\n";
@@ -84,6 +81,8 @@ int main(int argc, char* argv[]) {
                 out << endl;
                 continue;
             }
+            Node * from = fbGraph.map[num1];
+            Node * to = fbGraph.map[num2];
 	        vector<int> path = fbGraph.getPath(from, to);
 	        for (int i = path.size()-1; i >= 0; i--){
                 if(i == 0) {

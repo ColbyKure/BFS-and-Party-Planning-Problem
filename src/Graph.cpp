@@ -41,23 +41,23 @@ Graph::~Graph(void) {
  * Returns: void
  **/
 void Graph::insert(int n1, int n2) {
-    //if not in graph make a new Node
-    Node * left = map[n1];
-    if(left == nullptr) {
-        left = new Node(n1);
-        map[n1] = left;
+    //find n1 else add new Node
+    auto node1 = map.find(n1);
+    if(node1 == map.end()) {
+        map[n1] = new Node(n1);
         ++size;
     }
-    Node * right = map[n2];
-    if(right == nullptr) {
-        right = new Node(n2);
-        map[n2] = right;
+
+    //find n2 else add new Node
+    auto node2 = map.find(n2);
+    if(node2 == map.end()) {
+        map[n2] = new Node(n2);
         ++size;
     }
 
     //then add edges both directions
-    left->addFriend(n2);
-    right->addFriend(n1);
+    map[n1]->addFriend(n2);
+    map[n2]->addFriend(n1);
 
     ++numEdges;
 }
@@ -117,7 +117,7 @@ bool Graph::loadFromFile(const char* in_filename) {
  * Parameter:  two node objects 
  * Returns: Vector<int>: the path going from one node to the other
  **/
-vector<int> Graph::getPath(Node * from, Node* to) {
+vector<int> Graph::getPath(Node * from, Node * to) {
     vector<int> path;
     if(from == to) {
         for(unsigned int i = 0; i < from->friends.size(); i++) {
@@ -148,29 +148,45 @@ vector<int> Graph::getPath(Node * from, Node* to) {
  * Returns: boolean True if there is a path
  *		    False if there is no path
  **/
-bool Graph::pathfinder(Node* from, Node* to) {
+bool Graph::pathfinder(int from, int to) {
     //id not valid 
-    if((from == nullptr) | (to == nullptr)) {
+    Node * left;
+    Node * right;
+    if(map.find(from) == map.end()) {
+        left = nullptr;
+    }
+    else {
+        left = map[from];
+    }
+    if(map.find(to) == map.end()) {
+        right = nullptr;
+    }
+    else {
+        right = map[to];
+    }
+
+    if((left == nullptr) | (right == nullptr)) {
         return false;
     }
-    if(from == to) {
+    if(left == right) {
         return true;
     }
 
     //init all data in nodes
-    for (auto iter = map.begin(); iter != map.end(); iter++) {
-        iter->second->done = false;
-        iter->second->prev = nullptr;
-        iter->second->dist = -1;
+    //for(unordered_map<int,Node*>::iterator iter = map.begin(); iter != map.end(); iter++) {
+    for(auto iter : map) {
+        iter.second->done = false;
+        iter.second->prev = nullptr;
+        iter.second->dist = -1;
     }
 
     //create queue for BFS
     queue<Node*> queue;
 
     //start algorithm
-    from->done = true;
-    from->dist = 0;
-    queue.push(from);
+    left->done = true;
+    left->dist = 0;
+    queue.push(left);
 
     //loop while queue non-empty/visited_some
     Node * curr;
@@ -185,7 +201,7 @@ bool Graph::pathfinder(Node* from, Node* to) {
                 map[n]->dist = curr->dist + 1;
 
                 //is this the elem were looking for?
-                if (map[n] == to) {
+                if(map[n] == right) {
                     return true; //exit early
                 }
                 queue.push(map[n]);
@@ -207,10 +223,11 @@ bool Graph::pathfinder(Node* from, Node* to) {
  **/
 void Graph::socialgathering(vector<string>& invitees, const int& k) {
     //init data in all nodes
-    for (auto iter : map) {
-        iter.second->done = false;
-        iter.second->prev = nullptr; //leaves this alone
-        iter.second->dist = -1;
+    for (unordered_map<int,Node*>::iterator iter = map.begin(); 
+                iter != map.end(); iter++) {
+        iter->second->done = false;
+        iter->second->prev = nullptr; //leaves this alone
+        iter->second->dist = -1;
     }
 
     //base case k is more than size of invitees.
@@ -222,7 +239,6 @@ void Graph::socialgathering(vector<string>& invitees, const int& k) {
     priority_queue<Node*, vector<Node*>, NodePtrComp> pq; 
     //queue<int> que;
 
-    //TODO
     /*//add all invitees to pq mark done
     for (auto iter : invitees) {
         *iter->dist = k;        // dist = numPplKnown

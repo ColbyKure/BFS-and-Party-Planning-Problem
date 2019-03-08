@@ -46,7 +46,7 @@ class Graph {
     
     vector<int> getPath(Node * from, Node * to);
 
-    bool pathfinder(Node* from, Node* to);
+    bool pathfinder(int from, int to);
     
     void socialgathering(vector<string>& invitees, const int& k);
 
