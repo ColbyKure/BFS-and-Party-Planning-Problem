@@ -131,9 +131,8 @@ vector<int> Graph::getPath(Node * from, Node* to) {
  * Returns true if path is found.
  **/
 bool Graph::pathfinder(Node* from, Node* to) {
-    //null check 
+    //id not valid 
     if((from == nullptr) | (to == nullptr)) {
-        cerr << "nullptr passed to pathfinder, exiting\n";
         return false;
     }
 
@@ -178,7 +177,7 @@ bool Graph::pathfinder(Node* from, Node* to) {
             }
         }
     }
-    return false; //should not reach here ever
+    return false; //ids not connected
 }
 
 /**
