@@ -37,55 +37,54 @@ int main(int argc, char* argv[]) {
     }
 
     infile.seekg(0, ios::beg);
-    while(infile) { 
-	    //get each line in file
-	    string pairs; 
-	    if(!getline(infile, pairs)){
+    while(infile) {
+        //get each line in file
+	string pairs; 
+	if(!getline(infile, pairs)){
+	    break;
+	}
+	//get each char in line
+	istringstream ss(pairs);
+	vector<string> record;
+	while (ss) {
+	    string s;
+	    if (!getline(ss, s, ' ')){
 	        break;
 	    }
+	    record.push_back(s);
 
-	    //get each char in line
-	    istringstream ss(pairs);
-	    vector<string> record;
-	    while (ss) {
-	        string s;
-	        if (!getline(ss, s, ' ')){
-	            break;
-	        }
-	        record.push_back(s);
-
-	        if(record.size() != 2) {
-	            continue;
+	    if(record.size() != 2) {
+	        continue;
             }
-
             //found path to find
             int num1 = strtol(record[0].c_str(), nullptr, 10);
-	        int num2 = strtol(record[1].c_str(), nullptr, 10);
+	    int num2 = strtol(record[1].c_str(), nullptr, 10);
 
     	    Node * from = fbGraph.map[num1]; 
     	    Node * to = fbGraph.map[num2];
-	        //checks if there is an existing path
+	    
+	    //checks if there is an existing path
     	    bool hasPath = fbGraph.pathfinder(from, to);
 
-	        if(!out.is_open()) {
+	    if(!out.is_open()) {
                 cerr << output_filename << " not opened!\n";
-	            return -1;
+	        return -1;
             }
 
-	        if(!hasPath){
+	    if(!hasPath){
                 out << endl;
                 continue;
             }
 
-	        vector<int> path = fbGraph.getPath(from, to);
-	        for (int i = path.size()-1; i >= 0; i--){
+	    vector<int> path = fbGraph.getPath(from, to);
+	    for (int i = path.size()-1; i >= 0; i--){
                 if(i == 0) {
                     out << path[i];
                     break;
                 }
-	            out << path[i] << " ";
-	        }	     
-	        out << endl;
+	        out << path[i] << " ";
+	    }	     
+	    out << endl;
         }
     }
     //close files
