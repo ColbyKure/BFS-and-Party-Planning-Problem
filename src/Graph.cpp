@@ -129,7 +129,7 @@ vector<int> Graph::getPath(Node * from, Node* to) {
     }
     Node * curr = to;
     while(true){
-	path.push_back(curr->name);
+	    path.push_back(curr->name);
         if(curr->prev == from) break;
         curr = curr->prev;
     }
@@ -157,12 +157,6 @@ bool Graph::pathfinder(Node* from, Node* to) {
         iter->second->done = false;
         iter->second->prev = nullptr;
         iter->second->dist = -1;
-    }
-
-    //base case from equals to
-    if(from == to) {
-        to->prev = from;
-        return true;
     }
 
     //create queue for BFS
