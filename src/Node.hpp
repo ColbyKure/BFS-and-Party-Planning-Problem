@@ -1,3 +1,12 @@
+/**
+ * Assignment Name: PA 3
+ * Filename: Node.hpp 
+ * Name: Sunny Sun & Colby Kure
+ * Date: 03/07/2019
+ * Description: This file contains methods we need when we need to create 
+ *		nodes for the graph or delete nodes.
+ **/
+#include <cstdlib>
 #ifndef NODE_HPP
 #define NODE_HPP
 
@@ -43,8 +52,10 @@ public:
 
     /* Prints Node Data to out num friends (short version)*/
     void peek(const unsigned int & num) {
-        cout << "(name, done, dist, prev) == (" << name << ", " << done << ", " << dist << ", " << prev << ")\n";
-        cout << "printing " << num << "/" << friends.size() << " many friends\n";
+        cout << "(name, done, dist, prev) == (" << name << ", " << done 
+	     << ", " << dist << ", " << prev << ")\n";
+        cout << "printing " << num << "/" << friends.size() 
+	     << " many friends\n";
         for(unsigned int i = 0; ((i < friends.size()) | (i < num)); ++i) {
             cout << "(" << i << ": " << friends[i] << ") ";
             if(i % 4 == 0) { cout << endl; }

@@ -1,3 +1,11 @@
+/**
+ * Assignment Name: PA 3
+ * Filename: Graph.hpp 
+ * Name: Sunny Sun & Colby Kure
+ * Date: 03/07/2019
+ * Description: This file is the header file for Graph.cpp and contains all
+ * 		the methods included in Graph.cpp
+ **/
 #ifndef GRAPH_HPP
 #define GRAPH_HPP
 
