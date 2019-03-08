@@ -107,6 +107,7 @@ bool Graph::loadFromFile(const char* in_filename) {
 vector<int> Graph::getPath(Node * from, Node* to) {
     vector<int> path;
     if(from == to) {
+        path.push_back(to->name);
         return path;
     }
     Node * curr = to;
