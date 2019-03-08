@@ -29,9 +29,9 @@ Graph::Graph(void) : size(0), numEdges(0) { }
 
 /* Destructor */
 Graph::~Graph(void) {
-  for (auto itr : map) {
-    delete itr.second;
-  }
+    for (auto itr : map) {
+        delete itr.second;
+    }
 }
 
 /**
@@ -129,7 +129,7 @@ vector<int> Graph::getPath(Node * from, Node* to) {
     }
     Node * curr = to;
     while(true){
-	    path.push_back(curr->name);
+	path.push_back(curr->name);
         if(curr->prev == from) break;
         curr = curr->prev;
     }
