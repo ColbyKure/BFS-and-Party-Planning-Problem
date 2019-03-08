@@ -120,18 +120,15 @@ bool Graph::loadFromFile(const char* in_filename) {
 vector<int> Graph::getPath(Node * from, Node* to) {
     vector<int> path;
     if(from == to) {
-        for(unsigned int i = 0; i < from->friends.size(); ++i) {
-            if(from->name == from->friends[i]) {
-                path.push_back(to->name);
-            }
-        }
+        path.push_back(to->name);
         return path;
     }
     Node * curr = to;
+    path.push_back(curr->name);
     while(true){
-	    path.push_back(curr->name);
-        if(curr->prev == from) break;
         curr = curr->prev;
+        if(curr->dist == 0) break;
+	    path.push_back(curr->name);
     }
     path.push_back(from->name);
     return path;

@@ -84,7 +84,6 @@ int main(int argc, char* argv[]) {
                 out << endl;
                 continue;
             }
-
 	        vector<int> path = fbGraph.getPath(from, to);
 	        for (int i = path.size()-1; i >= 0; i--){
                 if(i == 0) {
