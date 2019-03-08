@@ -30,16 +30,14 @@ Graph::~Graph(void) {
  * Returns true if edge inserted.
  **/
 void Graph::insert(int n1, int n2) {
-    //find n1 and n2 in graph
-    Node * left = map[n1];
-    Node * right = map[n2];
-
     //if not in graph make a new Node
+    Node * left = map[n1];
     if(left == nullptr) {
         left = new Node(n1);
         map[n1] = left;
         ++size;
     }
+    Node * right = map[n2];
     if(right == nullptr) {
         right = new Node(n2);
         map[n2] = right;
@@ -107,7 +105,11 @@ bool Graph::loadFromFile(const char* in_filename) {
 vector<int> Graph::getPath(Node * from, Node* to) {
     vector<int> path;
     if(from == to) {
-        path.push_back(to->name);
+        for(unsigned int i = 0; i < from->friends.size(); ++i) {
+            if(from->name == from->friends[i]) {
+                path.push_back(to->name);
+            }
+        }
         return path;
     }
     Node * curr = to;

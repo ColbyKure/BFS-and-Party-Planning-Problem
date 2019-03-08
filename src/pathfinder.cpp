@@ -77,11 +77,13 @@ int main(int argc, char* argv[]) {
             }
 
 	        vector<int> path = fbGraph.getPath(from, to);
-	        for (int i = path.size()-1; i > 0; i--){
+	        for (int i = path.size()-1; i >= 0; i--){
+                if(i == 0) {
+                    out << path[i];
+                    break;
+                }
 	            out << path[i] << " ";
-	        }
-            out << path[0];
-	     
+	        }	     
 	        out << endl;
         }
     }
