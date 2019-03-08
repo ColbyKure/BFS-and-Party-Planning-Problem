@@ -85,7 +85,6 @@ int main(int argc, char* argv[]) {
 	        out << endl;
         }
     }
-    out << endl;
     //close files
     if(out.is_open()) {
         out.close();
