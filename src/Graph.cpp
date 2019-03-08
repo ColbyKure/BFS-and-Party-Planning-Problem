@@ -120,10 +120,12 @@ bool Graph::loadFromFile(const char* in_filename) {
 vector<int> Graph::getPath(Node * from, Node* to) {
     vector<int> path;
     if(from == to) {
-        for(int i = 0; i < to->friends.size(); i++) {
-            if(to->friends[i] == )
-            path.push_back(to->name);
+        for(unsigned int i = 0; i < from->friends.size(); i++) {
+            if(from->friends[i] == to->name) {
+                path.push_back(to->name);
+            }
         }
+        path.push_back(to->name);
         return path;
     }
     Node * curr = to;
@@ -150,6 +152,9 @@ bool Graph::pathfinder(Node* from, Node* to) {
     //id not valid 
     if((from == nullptr) | (to == nullptr)) {
         return false;
+    }
+    if(from == to) {
+        return true;
     }
 
     //init all data in nodes
