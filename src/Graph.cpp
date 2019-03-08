@@ -139,10 +139,10 @@ bool Graph::pathfinder(Node* from, Node* to) {
     }
 
     //init all data in nodes
-    for (auto iter : map) {
-        iter.second->done = false;
-        iter.second->prev = nullptr;
-        iter.second->dist = -1;
+    for (auto iter = map.begin(); iter != map.end(); iter++) {
+        iter->second->done = false;
+        iter->second->prev = nullptr;
+        iter->second->dist = -1;
     }
 
     //base case from equals to

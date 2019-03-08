@@ -36,6 +36,7 @@ int main(int argc, char* argv[]) {
 	    return -1;
     }
 
+    infile.seekg(0, ios::beg);
     while(infile) { 
 	    //get each line in file
 	    string pairs; 
