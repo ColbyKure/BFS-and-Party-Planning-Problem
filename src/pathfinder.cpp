@@ -61,8 +61,6 @@ int main(int argc, char* argv[]) {
             int num1 = strtol(record[0].c_str(), nullptr, 10);
 	        int num2 = strtol(record[1].c_str(), nullptr, 10);
 
-            cout << "(n1, n2)==(" << num1 << ", " << num2 << ")" << endl;
-
     	    Node * from = fbGraph.map[num1]; 
     	    Node * to = fbGraph.map[num2];
 	        //checks if there is an existing path
