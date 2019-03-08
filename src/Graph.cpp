@@ -160,7 +160,7 @@ bool Graph::pathfinder(Node* from, Node* to) {
     queue<Node*> queue;
 
     //start algorithm
-    from->done = true;
+    //from->done = true;
     from->dist = 0;
     queue.push(from);
 
