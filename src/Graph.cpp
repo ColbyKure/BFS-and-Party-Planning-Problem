@@ -1,3 +1,13 @@
+/**
+ * Assignment Name: PA 3
+ * Filename: Graph.cpp 
+ * Name: Sunny Sun & Colby Kure
+ * Date: 03/07/2019
+ * Description: This file contains methods in which we try to find the path
+ * 		between two nodes and bool of whether there exists a path
+ *		between the two nodes. We also load from file and create the
+ *		graph in this file.
+ **/
 #include <algorithm>
 #include <fstream>
 #include <iostream>
@@ -25,9 +35,10 @@ Graph::~Graph(void) {
 }
 
 /**
- * This function inserts an edge into the graph.
- *
- * Returns true if edge inserted.
+ * Function Name: insert(int n1, int n2)
+ * Description: This function inserts an edge into the graph.
+ * Parameter: two integers representing the name of the nodes
+ * Returns: void
  **/
 void Graph::insert(int n1, int n2) {
     //if not in graph make a new Node
@@ -52,10 +63,12 @@ void Graph::insert(int n1, int n2) {
 }
  
 /**
- * Read in relationships from an inputfile to create a graph.
- * Insert edges according to file contents.
- *
- * Return true if inserted properly.
+ * Function Name: loadFromFile(const char* in_filename)
+ * Description: Read in relationships from an inputfile to create a graph.
+ *		Insert edges according to file contents.
+ * Parameter: char pointer of filepath
+ * Returns: boolean
+ * 	    true if inserted properly.
  **/
 bool Graph::loadFromFile(const char* in_filename) {
     ifstream infile(in_filename);
@@ -96,11 +109,13 @@ bool Graph::loadFromFile(const char* in_filename) {
 }
 
 /**
- * This functions find the path between 2 nodes. The function uses BFS to search
- * the graph for paths. When the path is found the program saves the 
- * path. Edges are not weighted. path not found write newline only.
- *
- * Returns the path.
+ * Function Name: getPath(Node * from, Node* to) 
+ * Description: This functions find the path between 2 nodes. The function 
+ * 		uses BFS to search the graph for paths. When the path is 
+ * 		found the program saves the path. Edges are not weighted. 
+ * 		Path not found write newline only.
+ * Parameter:  two node objects 
+ * Returns: Vector<int>: the path going from one node to the other
  **/
 vector<int> Graph::getPath(Node * from, Node* to) {
     vector<int> path;
@@ -123,14 +138,13 @@ vector<int> Graph::getPath(Node * from, Node* to) {
 }
 
 
-
-
 /**
- * This functions find a path between 2 nodes. The function uses BFS to search
- * the graph for paths. When the path is found the program exits and saves the 
- * path. Edges are not weighted. path not found write newline only.
- *
- * Returns true if path is found.
+ * Function Name: pathfinder(Node* from, Node* to)
+ * Description: This function finds if there is a path between 2 nodes. 
+ *		The function uses BFS to search the graph for paths.
+ * Parameter: two node objects 
+ * Returns: boolean True if there is a path
+ *		    False if there is no path
  **/
 bool Graph::pathfinder(Node* from, Node* to) {
     //id not valid 
@@ -183,11 +197,14 @@ bool Graph::pathfinder(Node* from, Node* to) {
 }
 
 /**
- *  This function will take the list of invitees and they are invited
- *  to the party. Then, it finds all those who know more than k people
- *  that are already invited to the party and then they get invited.
- *
- *  Returns with the full list of invitees. 
+ * Function Name: socialgathering(vector<string>& invitees, const int& k) 
+ * Description: This function will take the list of invitees and they are 
+ * 		invited to the party. Then, it finds all those who know more 
+ *		than k people that are already invited to the party and then
+ *		they get invited.
+ * Parameter: Vector<string> = people who got invited
+ *	      int k = number of people
+ * Returns: void & makes full list of invitees.
  **/
 void Graph::socialgathering(vector<string>& invitees, const int& k) {
     //init data in all nodes

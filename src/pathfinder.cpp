@@ -1,3 +1,12 @@
+/**
+ * Assignment Name: PA 3
+ * Filename: pathfinder.cpp 
+ * Name: Sunny Sun & Colby Kure
+ * Date: 03/07/2019
+ * Description: This file contains the main method in which we try to find
+ * 		the paths of nodes that are passed in via the pairs_filename
+ *		and if there is a path we return the path in our outfile.
+ **/
 #include <cstdlib>
 #include <cstring>
 #include <fstream>
