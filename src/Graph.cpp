@@ -221,48 +221,47 @@ bool Graph::pathfinder(int from, int to) {
  *	      int k = number of people
  * Returns: void & makes full list of invitees.
  **/
-void Graph::socialgathering(vector<string>& invitees, const int& k) {
-    //init data in all nodes
+void Graph::socialgathering(vector<int>& invitees, const int& k) {
+    //find degrees of all node
+    vector<int> kicked;
     for (unordered_map<int,Node*>::iterator iter = map.begin(); 
-                iter != map.end(); iter++) {
-        iter->second->done = false;
+                iter != map.end(); iter++){
+        iter->second->done = true;
         iter->second->prev = nullptr; //leaves this alone
-        iter->second->dist = -1;
+        iter->second->dist = iter->second->friends.size();
+        if(iter->second->dist < k) {
+            kicked.push_back(iter->second->name);
+            iter->second->done = false;
+            cout << "init " << iter->second->name << endl;
+        }
     }
 
-    //base case k is more than size of invitees.
-    if ((int)invitees.size() < k) {
-        return; //no one new can go
-    }
+    //decrement for each friend of kickee
+    int currDist = 0;
+    for(unsigned int i = 0; i < kicked.size(); ++i) {
+        cout << "delete edges for " << kicked[i] << endl;
+        for(int buddy : map[kicked[i]]->friends) {
+            currDist = map[buddy]->dist;
+            map[buddy]->dist = currDist - 1;
 
-    //create priority queue
-    priority_queue<Node*, vector<Node*>, NodePtrComp> pq; 
-    //queue<int> que;
+            if(buddy == 1285) {
+                cout << "1285 has edges = " << currDist << endl;
+            }
 
-    /*//add all invitees to pq mark done
-    for (auto iter : invitees) {
-        *iter->dist = k;        // dist = numPplKnown
-        *iter->done = true;     // done == invited
-        pq.push(*iter);
-    }*/
-
-    //empty out pq updating graph data as you pop each node
-    Node * curr;
-    int numKnown;
-    while (!pq.empty()) { 
-        curr = pq.top();      // get next 
-        pq.pop();
-        for (int n : curr->friends) {
-            if (!map[n]->done) {
-                numKnown = map[n]->dist;
-                map[n]->dist = ++numKnown;
-                if (numKnown == k) {
-                    map[n]->done = true;
-                    //TODO push map[n]->second to invitees
-                    pq.push(map[n]);
-                }
+            if((currDist <= k) & (map[buddy]->done)) {
+                kicked.push_back(map[buddy]->name);
+                //cout << "kicking " << map[buddy]->name << endl;
+                map[buddy]->done = false;
             }
         }
     }
-}
 
+    for(unordered_map<int,Node*>::iterator iter = map.begin(); 
+                iter != map.end(); iter++){
+        if(iter->second->done) {
+            invitees.push_back(iter->second->name);
+        }
+    }
+
+    sort(invitees.begin(), invitees.end());
+}

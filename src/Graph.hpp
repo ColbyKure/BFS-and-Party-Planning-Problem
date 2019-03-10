@@ -48,7 +48,7 @@ class Graph {
 
     bool pathfinder(int from, int to);
     
-    void socialgathering(vector<string>& invitees, const int& k);
+    void socialgathering(vector<int>& invitees, const int& k);
 
 };
 
