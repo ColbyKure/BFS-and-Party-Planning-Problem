@@ -86,8 +86,7 @@ bool Graph::loadFromFile(const char* in_filename) {
             string s;
             if (!getline(ss, s, ' ')) break;
             record.push_back(s);
-        }
-        
+        } 
         if (record.size() != 2) {
             continue;
         }
@@ -232,25 +231,18 @@ void Graph::socialgathering(vector<int>& invitees, const int& k) {
         if(iter->second->dist < k) {
             kicked.push_back(iter->second->name);
             iter->second->done = false;
-            cout << "init " << iter->second->name << endl;
         }
     }
 
     //decrement for each friend of kickee
     int currDist = 0;
     for(unsigned int i = 0; i < kicked.size(); ++i) {
-        cout << "delete edges for " << kicked[i] << endl;
         for(int buddy : map[kicked[i]]->friends) {
             currDist = map[buddy]->dist;
             map[buddy]->dist = currDist - 1;
 
-            if(buddy == 1285) {
-                cout << "1285 has edges = " << currDist << endl;
-            }
-
             if((currDist <= k) & (map[buddy]->done)) {
                 kicked.push_back(map[buddy]->name);
-                //cout << "kicking " << map[buddy]->name << endl;
                 map[buddy]->done = false;
             }
         }
