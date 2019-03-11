@@ -32,6 +32,9 @@ public:
     void MovieGraph::insertLine(string actor, string movie, string year) {
     }
 
-    getMovieList() {
+    getMovieList(Node * from, Node * to) {
     }
-}
+
+
+};
+#endif
