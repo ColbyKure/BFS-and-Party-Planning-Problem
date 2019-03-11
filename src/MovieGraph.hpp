@@ -23,11 +23,42 @@ public:
      *      [actor]<tab>[movie]<tab>[year]
      */
     bool MovieGraph::loadMovies(const char* in_filename) {
+    	ifstream infile(in_filename);
+    	infile.seekg(0, ios::beg);
+    
+        while (infile) { 
+            //get each line in file
+            string s; 
+            if (!getline(infile, s)) break;
+
+            //get each char in line
+            istringstream ss(s);
+            vector<string> record;
+            while (ss) {
+                string s;
+                if (!getline(ss, s, '\t')) break;
+                record.push_back(s);
+            } 
+            if (record.size() != 3) {
+                continue;
+            }
+            insertLine(record[0], record[1], record[2]);
+        }
+
+        //if not end of file then throw error
+        if(!infile.eof()) {
+            cerr << "Failed to read " << in_filename << "!\n";
+            return false;
+        }
+
+        //close file 
+        infile.close();
+        return true;
     }
     
     /**
      * According to each line it inserts actors as nodes, movie as edges, and 
-     * year as weight.
+     * year as weight into the graph.
      */
     void MovieGraph::insertLine(string actor, string movie, string year) {
     }

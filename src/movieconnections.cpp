@@ -22,27 +22,29 @@ using namespace std;
 void usage(char* program_name) {
     cerr << program_name << " called with incorrect arguments." << endl;
     cerr << "Usage: " << program_name
-	 << " actor_pairs.txt output.txt"
+	 << " StartingActor.txt output.txt numberOfDegree"
 	 << endl;
     exit(-1);
 }
 
 int main(int argc, char* argv[]) {
 
-    if(argc != 3) {
+    if(argc != 4) {
 	    usage(argv[0]);
     }
 
     char* graph_filename = argv[1];
     char* output_filename = argv[2];
+    int numDegree = argv[3];
 
     /* You can call the pathfinder function from here */
     MovieGraph mst;
 
-    if(!mst.loadFromFile(graph_filename)){
-	    return -1;
+    if(!mst.loadMovies(graph_filename)){
+	return -1;
     }
 
     movieconnections(output_filename);
     return 1;
+    
 }
