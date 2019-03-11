@@ -1,9 +1,9 @@
 /**
- * Assignment:
- * Filename:
- * Name:
- * Date:
- * Description:
+ * Assignment:PA3, part 3, Prim's Algorithm
+ * Filename: ActorNode.hpp
+ * Name: Colby Kure, Sunny Sun
+ * Date: 3/11/19
+ * Description: This file holds node class 
  **/
 
 #ifndef ACTORNODE_HPP
@@ -22,8 +22,12 @@ public:
     Node * prev;
 
     /* Constructor for Node */
-    ActorNode(string name) {
+    ActorNode(string name) : prev(0) {
         actor_name = name;
-        edges 
     }
-}
+
+    /* Destructor */
+    ~ActorNode() { //default }
+};
+
+#endif
