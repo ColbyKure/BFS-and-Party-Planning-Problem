@@ -6,21 +6,21 @@
  * Description: This file contains methods we need when we need to create 
  *		nodes for the graph or delete nodes.
  **/
-#include <cstdlib>
 #ifndef NODE_HPP
 #define NODE_HPP
 
 #include <iostream>
+#include <cstdlib>
 
 using namespace std;
 
 class Node {
 public:
-    bool done;              // visited node
     int name;               // id number for person
+    vector<int> edges;    // edges of graph
+    bool done;              // visited node
     int dist;               // dist from start
     Node * prev;            // prev node in path
-    vector<int> friends;    // edges of graph
 
     /* Constructor for Node. */
     Node(int id) : done(false), dist(-1), prev(0) {
@@ -30,9 +30,9 @@ public:
     /* Destructor for Node. */
     ~Node(void) { }
 
-    /* Setter for friends */
+    /* Setter for edges */
     void addFriend(const int & newFriend) {
-        friends.push_back(newFriend);
+        edges.push_back(newFriend);
     }
 
     /* Prints Node Data to out */
@@ -43,21 +43,21 @@ public:
         else { cout << "falsn\n"; }
         cout << "dist = " << dist << endl;
         cout << "prev = " << prev << endl;
-        cout << name << " has " << friends.size() << "friends\n";
-        for(unsigned int i = 0; i < friends.size(); ++i) {
-            cout << "\t" << i << ": " << friends[i] << endl;
+        cout << name << " has " << edges.size() << "edges\n";
+        for(unsigned int i = 0; i < edges.size(); ++i) {
+            cout << "\t" << i << ": " << edges[i] << endl;
         }
         cout << "Finished printing " << name << endl;
     }
 
-    /* Prints Node Data to out num friends (short version)*/
+    /* Prints Node Data to out num edges (short version)*/
     void peek(const unsigned int & num) {
         cout << "(name, done, dist, prev) == (" << name << ", " << done 
 	     << ", " << dist << ", " << prev << ")\n";
-        cout << "printing " << num << "/" << friends.size() 
-	     << " many friends\n";
-        for(unsigned int i = 0; ((i < friends.size()) | (i < num)); ++i) {
-            cout << "(" << i << ": " << friends[i] << ") ";
+        cout << "printing " << num << "/" << edges.size() 
+	     << " many edges\n";
+        for(unsigned int i = 0; ((i < edges.size()) | (i < num)); ++i) {
+            cout << "(" << i << ": " << edges[i] << ") ";
             if(i % 4 == 0) { cout << endl; }
         }
         cout << "Finished printing " << name << endl;

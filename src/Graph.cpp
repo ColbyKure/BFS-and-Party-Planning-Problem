@@ -119,8 +119,8 @@ bool Graph::loadFromFile(const char* in_filename) {
 vector<int> Graph::getPath(Node * from, Node * to) {
     vector<int> path;
     if(from == to) {
-        for(unsigned int i = 0; i < from->friends.size(); i++) {
-            if(from->friends[i] == to->name) {
+        for(unsigned int i = 0; i < from->edges.size(); i++) {
+            if(from->edges[i] == to->name) {
                 path.push_back(to->name);
             }
         }
@@ -192,7 +192,7 @@ bool Graph::pathfinder(int from, int to) {
     while (!queue.empty()) {
         curr = queue.front();      // get next 
         queue.pop();
-        for (int n : curr->friends) {
+        for (int n : curr->edges) {
             //set data in non-visited nodes
             if (!map[n]->done) {
                 map[n]->done = true;
@@ -216,7 +216,7 @@ bool Graph::pathfinder(int from, int to) {
  * 		invited to the party. Then, it finds all those who know more 
  *		than k people that are already invited to the party and then
  *		they get invited.
- * Parameter: Vector<string> = people who got invited
+ * Parameter: Vector<int> = people who got invited
  *	      int k = number of people
  * Returns: void & makes full list of invitees.
  **/
@@ -227,7 +227,7 @@ void Graph::socialgathering(vector<int>& invitees, const int& k) {
                 iter != map.end(); iter++){
         iter->second->done = true;
         iter->second->prev = nullptr; //leaves this alone
-        iter->second->dist = iter->second->friends.size();
+        iter->second->dist = iter->second->edges.size();
         if(iter->second->dist < k) {
             kicked.push_back(iter->second->name);
             iter->second->done = false;
@@ -237,7 +237,7 @@ void Graph::socialgathering(vector<int>& invitees, const int& k) {
     //decrement for each friend of kickee
     int currDist = 0;
     for(unsigned int i = 0; i < kicked.size(); ++i) {
-        for(int buddy : map[kicked[i]]->friends) {
+        for(int buddy : map[kicked[i]]->edges) {
             currDist = map[buddy]->dist;
             map[buddy]->dist = currDist - 1;
 
@@ -257,3 +257,68 @@ void Graph::socialgathering(vector<int>& invitees, const int& k) {
 
     sort(invitees.begin(), invitees.end());
 }
+
+/**
+ * Function Name: insertMovie(string name, string movie, string year)
+ * Description: Inserts weighted node
+ * Parameter:
+ * Returns:
+ **/
+
+/**
+ * Function Name: loadMovies(const char* in_filename)
+ * Description: Read in relationships from an inputfile to create a graph.
+ *		Insert edges according to file contents.
+ * Parameter: char pointer of filepath
+ * Returns: boolean
+ * 	    true if inserted properly.
+ **/
+bool Graph::loadMovies(const char* in_filename) {
+    ifstream infile(in_filename);
+    infile.seekg(0, ios::beg);
+    
+    while(infile) { 
+        //get each line in file
+        string s; 
+        if (!getline(infile, s)) break;
+
+        //get each char in line
+        istringstream ss(s);
+        vector<string> record;
+        while (ss) {
+            string s;
+            if (!getline(ss, s, ' ')) break;
+            record.push_back(s);
+        } 
+        if (record.size() != 3) {
+            continue;
+        }
+
+        insertMovie(record[0], record[1], record[2]);
+    }
+
+    //if not end of file then throw error
+    if(!infile.eof()) {
+        cerr << "Failed to read " << in_filename << "!\n";
+        return false;
+    }
+
+    //close file 
+    infile.close();
+    return true;
+}
+void Graph::movieconnections(vector<string>& movies) {
+}
+
+/**
+ * Function Name: movieconnections()
+ * Description: This function uses Prim's algorithm to find a list of movies 
+ *      that connects all actors.
+ * Parameter: list of movies 
+ * Returns:
+ **/
+void Graph::movieconnections(vector<string>& movies) {
+}
+
+
+
