@@ -11,18 +11,30 @@
 #define MOVIEGRAPH_HPP
 
 #include <iostream>
-
+#include "ActorNode.hpp"
 class MovieGraph {
 public:
-    unordered_map<string, Node *> actorList;
-    vector<string> movie_names;
+    unordered_map<string, ActorNode *> actorList;
+    unordered_map<string, vector<string>> actorsWithinMovies;
     vector<int> weights;
+    
+    
+    /* Constructor */
+    MovieGraph(void){}
+
+    /* Destructor */
+    ~MovieGraph(void) {
+        for (auto itr : actorList) {
+            delete itr.second;
+        }
+    } 
+    
     /**
      * Loads the graph with data from in_filename
      * Each line is formatted:
      *      [actor]<tab>[movie]<tab>[year]
      */
-    bool MovieGraph::loadMovies(const char* in_filename) {
+    bool loadMovies(const char* in_filename) {
     	ifstream infile(in_filename);
     	infile.seekg(0, ios::beg);
     
@@ -60,12 +72,40 @@ public:
      * According to each line it inserts actors as nodes, movie as edges, and 
      * year as weight into the graph.
      */
-    void MovieGraph::insertLine(string actor, string movie, string year) {
+    void insertLine(string actor, string movie, string year) {
+    	auto node = actorList.find(actor);
+	if (node == actorList.end()){
+	    actorList[actor] = new ActorNode(actor);
+	    actorList[actor]->movieNames.push_back(movie);
+	    actorList[actor]->years.push_back(year);
+	}
+	else{
+	    actorList[actor]->movieNames.push_back(movie);
+	    actorList[actor]->years.push_back(year);	
+	}
     }
 
-    getMovieList(Node * from, Node * to) {
-    }
 
+    /**
+     * Prim's algorithm
+     */
+    void getMovieConnections(ActorNode * starting){
+    
+    
+    
+    
+    
+    }
+    
+    
+    
+    
+    /**
+     * return the whole list vector of ints
+     */
+    vector<int> getMovieList(ActorNode * starting, int numberOfDegree) {
+    
+    }
 
 };
 #endif
