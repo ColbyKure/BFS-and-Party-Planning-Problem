@@ -48,3 +48,11 @@ int main(int argc, char* argv[]) {
     return 1;
     
 }
+
+/*
+
+    unordered_map<string, ActorNode *> actorList;
+    unordered_map<string, vector<string>> awm;
+    vector<int> weights;
+
+    */

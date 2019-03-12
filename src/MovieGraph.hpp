@@ -15,7 +15,7 @@
 class MovieGraph {
 public:
     unordered_map<string, ActorNode *> actorList;
-    unordered_map<string, vector<string>> actorsWithinMovies;
+    unordered_map<string, vector<string>> awm; //actors within same movie
     vector<int> weights;
     
     
@@ -74,37 +74,66 @@ public:
      */
     void insertLine(string actor, string movie, string year) {
     	auto node = actorList.find(actor);
+	// if the actor does not previously exist in the list
 	if (node == actorList.end()){
 	    actorList[actor] = new ActorNode(actor);
 	    actorList[actor]->movieNames.push_back(movie);
 	    actorList[actor]->years.push_back(year);
+	    
 	}
+	//if it does exist, just add movie and year
 	else{
 	    actorList[actor]->movieNames.push_back(movie);
 	    actorList[actor]->years.push_back(year);	
 	}
-    }
 
+	if(awm.find(actor) == awm.end()){
+	    //TODO what to do if same name movie different year
+       	    //adding actors to existing movies
+	    awm[movie].push_back(actor);
+	//TODO what to do with the weight??
+	}
+    }
 
     /**
      * Prim's algorithm
      */
-    void getMovieConnections(ActorNode * starting){
+    void getMovieConnections(ActorNode * starting, int numDegree){
+        //first initialize all the fields 
+        starting->done = false;
+        starting->prev = nullptr;
+        starting->weights = -1;
+	//TODO initialize movies and year
+        queue<ActorNode *> queue;
+
+        ActorNode * curr;
+        while(!queue.empty()){
+            curr = queue.front();
+	    queue.pop();
+	    for (ActorNode * actor : curr->edges){
+	         if(!actorList[actor]->done){
+        	     starting->done = true;
+        	     starting->prev = curr;
+        	     starting->weights = ; //TODO set year
+		     //TODO set movies
+	    	     queue.push(actorList[actor]);
+	         }
+	         //if it is already visited
+		 else if (actorList[actor]->done || degree == numDegree){
+		     movieList = getMovieList(starting:)
+		 
+		 }
+	    }
     
-    
-    
-    
-    
+        }
     }
-    
-    
     
     
     /**
      * return the whole list vector of ints
      */
     vector<int> getMovieList(ActorNode * starting, int numberOfDegree) {
-    
+         
     }
 
 };
