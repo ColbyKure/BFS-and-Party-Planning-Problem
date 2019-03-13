@@ -6,7 +6,8 @@
  * Description: This file contains the main method in which we try to find
  * 		the paths of nodes that are passed in via the pairs_filename
  *		and if there is a path we return the path in our outfile.
- **/
+ */
+
 #include <cstdlib>
 #include <cstring>
 #include <fstream>
@@ -15,44 +16,37 @@
 #include <string>
 #include <vector>
  
-#include "MST.hpp"
+#include "MovieGraph.hpp"
 
 using namespace std;
 
 void usage(char* program_name) {
     cerr << program_name << " called with incorrect arguments." << endl;
     cerr << "Usage: " << program_name
-	 << " StartingActor.txt output.txt numberOfDegree"
+	 << " GraphData.txt StartingActor.txt output.txt numberOfDegree"
 	 << endl;
     exit(-1);
 }
 
 int main(int argc, char* argv[]) {
 
-    if(argc != 4) {
+    if(argc != 5) {
 	    usage(argv[0]);
     }
 
     char* graph_filename = argv[1];
-    char* output_filename = argv[2];
-    int numDegree = argv[3];
+    char* actors_filename = argv[2];
+    char* output_filename = argv[3];
+    int numDegree = strtol(argv[4], nullptr, 10);
 
     /* You can call the pathfinder function from here */
-    MovieGraph mst;
+    MovieGraph graph;
 
-    if(!mst.loadMovies(graph_filename)){
-	return -1;
+    if(!graph.loadMovies(graph_filename)) {
+	    return -1;
     }
 
-    movieconnections(output_filename);
+    ActorNode * curr;
+    graph.connectMovies(curr);
     return 1;
-    
 }
-
-/*
-
-    unordered_map<string, ActorNode *> actorList;
-    unordered_map<string, vector<string>> awm;
-    vector<int> weights;
-
-    */

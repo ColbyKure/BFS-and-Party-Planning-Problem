@@ -1,3 +1,5 @@
+#ifndef ACTORNODE_HPP
+#define ACTORNODE_HPP
 /**
  * Assignment:PA3, part 3, Prim's Algorithm
  * Filename: ActorNode.hpp
@@ -6,28 +8,33 @@
  * Description: This file holds node class 
  **/
 
-#ifndef ACTORNODE_HPP
-#define ACTORNODE_HPP
-
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
 class ActorNode {
 public:
-    string actor_name;
-    vector<ActorNode*> edges;
-    vector<string> movieNames;
-    vector<int> years;
+    string name;
+    vector<string> edges;
+    bool done;
     ActorNode * prev;
+    int minWeight;
+    //vector<ActorNode*> edges;
+    //vector<string> movieNames;
+    //vector<int> years;
 
     /* Constructor for Node */
-    ActorNode(string name) : prev(0) {
+    ActorNode(string actor);
+    /*: prev(0) {
         actor_name = name;
-    }
+        minWeight = 0;
+        done = false;
+    }*/
 
     /* Destructor */
-    ~ActorNode() { //default }
+    ~ActorNode(); 
+    //{ } //default
 };
 
 #endif
