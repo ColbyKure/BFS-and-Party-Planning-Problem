@@ -46,7 +46,21 @@ int main(int argc, char* argv[]) {
 	    return -1;
     }
 
-    ActorNode * curr;
-    graph.connectMovies(curr);
+    //open infile
+    ifstream input(actors_filename);
+    if(!input.is_open()) {
+        cerr << actors_filename << " not opened!\n";
+        return -1;
+    }
+    input.seekg(0, ios::beg);
+
+    while(input) {
+        string start; 
+        if (!getline(input, start)) break;
+
+        graph.connectMovies(graph.actorList[start]);
+        
+        //TODO outfile
+    }
     return 1;
 }

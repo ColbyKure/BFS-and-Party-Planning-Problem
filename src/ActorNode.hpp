@@ -19,6 +19,7 @@ public:
     vector<string> edges;
     bool done;
     ActorNode * prev;
+    string prevEdge;
     int minWeight;
     //vector<ActorNode*> edges;
     //vector<string> movieNames;

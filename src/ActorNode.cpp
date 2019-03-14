@@ -16,6 +16,7 @@ using namespace std;
 /* Constructor for Node */
 ActorNode::ActorNode(string actor) : prev(0) {
     name = actor;
+    prevEdge = "";
     minWeight = 0;
     done = false;
 }
