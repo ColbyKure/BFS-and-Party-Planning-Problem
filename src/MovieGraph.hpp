@@ -34,9 +34,6 @@ class MovieGraph {
 public:
     unordered_map<string, ActorNode*> actorList;
     unordered_map<string, vector<ActorNode*>> movieList;
-    //unordered_map<string, vector<string>> awm; //actors within same movie
-    //vector<int> weights;
-    
     
     /* Constructor */
     MovieGraph(void){ }
@@ -48,7 +45,7 @@ public:
         }
     }
 
-    /* new insertLine */
+    /* insertLine from file into graph */
     void insertLine(string actor, string movie, string year) {
         string movieYear = movie + '\t' + year;
 
@@ -148,35 +145,46 @@ public:
         } //loop while pq non-empty
     }
 
+    /* gets data after Prim's */
     vector<vector<string>*> getData() {
         //base case 
-        vector<vector<string>*> ret = {};
+        vector<vector<string>*> ret;
 
+        //init fields 
         for(auto iter = actorList.begin(); iter != actorList.end(); iter++) {
             iter->second->done = false;
-            iter->second->minWeight = -1;
+            iter->second->minWeight = -1; //use minWeight for degree
         }
 
         for(auto iter = actorList.begin(); iter != actorList.end(); iter++) {
             if(!iter->second->done) {
-                setDegree(iter->second, ret);
+                (void)setDegree(iter->second, ret);
             }
         }
         return ret;
     }
 
-    void setDegree(ActorNode * node, vector<vector<string>*> & ret) {
-        if(!node->prev) return;
-        if(node->done) return;
+    /* helper to set degree from start */
+    int setDegree(ActorNode * node, vector<vector<string>*> & ret) {
+        if(node->prev == nullptr) {
+            return -1;
+        }
+        if(node->done) {
+            return -1;
+        }
         ActorNode * curr = node;
         int dist = 0;
         vector<ActorNode *> path;
         path.push_back(curr);
+        //cout << "searching for " << node->name << endl;
         while(curr->prev) {
             curr = curr->prev;
+            //cout << curr->name << "->";
             path.push_back(curr);
             dist++;
         }
+
+        //cout << endl; //TODO
         for(int i = 0; i < dist; ++i) {
             if(path[i]->done) continue;
             path[i]->done = true;
@@ -188,6 +196,7 @@ public:
             }
             ret[dist - i]->push_back(path[i]->prevEdge);
         }
+        return 1;
     }
     
     /**

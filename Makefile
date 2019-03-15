@@ -17,7 +17,7 @@ BUILDDIR := build
 OBJDIR := $(BUILDDIR)/obj
 
 
-all: init pathfinder socialgathering movieconnections
+all: init pathfinder socialgathering movieconnections test
 
 pathfinder: init $(addprefix $(OBJDIR)/,pathfinder.o Graph.o)
 	$(CC) $(LDFLAGS) -o $(BUILDDIR)/$@ $(filter-out init,$^)
@@ -25,7 +25,10 @@ pathfinder: init $(addprefix $(OBJDIR)/,pathfinder.o Graph.o)
 socialgathering: init $(addprefix $(OBJDIR)/,socialgathering.o Graph.o)
 	$(CC) $(LDFLAGS) -o $(BUILDDIR)/$@ $(filter-out init,$^)
 
-movieconnections: init $(addprefix $(OBJDIR)/,movieconnections.o)
+movieconnections: init $(addprefix $(OBJDIR)/,movieconnections.o ActorNode.o)
+	$(CC) $(LDFLAGS) -o $(BUILDDIR)/$@ $(filter-out init,$^)
+
+test: init $(addprefix $(OBJDIR)/,test.o ActorNode.o)
 	$(CC) $(LDFLAGS) -o $(BUILDDIR)/$@ $(filter-out init,$^)
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.cpp
