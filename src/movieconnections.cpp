@@ -31,6 +31,7 @@ void usage(char* program_name) {
 int main(int argc, char* argv[]) {
 
     if(argc != 5) {
+        cout << argc << endl;
 	    usage(argv[0]);
     }
 
@@ -46,7 +47,8 @@ int main(int argc, char* argv[]) {
 	    return -1;
     }
 
-    //open infile
+    //open files
+    ofstream output(output_filename);
     ifstream input(actors_filename);
     if(!input.is_open()) {
         cerr << actors_filename << " not opened!\n";
@@ -58,9 +60,21 @@ int main(int argc, char* argv[]) {
         string start; 
         if (!getline(input, start)) break;
 
+        cout << "Finding connections from " << start << endl;
         graph.connectMovies(graph.actorList[start]);
-        
-        //TODO outfile
+
+        vector<vector<string>*> data = graph.getData();
+        if(numDegree > (int)data.size()) {
+            cout << "change degree from " << numDegree << " to " << data.size() << endl;
+            numDegree = data.size();
+        }
+        for(unsigned int i = 0; i < data.size(); ++i) {
+            output << "degree " << i << endl;
+            for(unsigned int j = 0; j < data[i]->size(); ++j) {
+                output << "\t" << data[i]->at(j) << endl;
+            }
+            output << "size " << data[i]->size() << endl << endl;
+        }
     }
     return 1;
 }

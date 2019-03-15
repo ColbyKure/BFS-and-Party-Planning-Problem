@@ -150,7 +150,7 @@ public:
 
     vector<vector<string>*> getData() {
         //base case 
-        vector<vector<string>*> ret;
+        vector<vector<string>*> ret = {};
 
         for(auto iter = actorList.begin(); iter != actorList.end(); iter++) {
             iter->second->done = false;
@@ -166,7 +166,7 @@ public:
     }
 
     void setDegree(ActorNode * node, vector<vector<string>*> & ret) {
-        if(node->prev) return;
+        if(!node->prev) return;
         if(node->done) return;
         ActorNode * curr = node;
         int dist = 0;
@@ -178,7 +178,7 @@ public:
             dist++;
         }
         for(int i = 0; i < dist; ++i) {
-            if(path[i]->done) break;
+            if(path[i]->done) continue;
             path[i]->done = true;
             path[i]->minWeight = dist - i;
 
