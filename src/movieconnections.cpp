@@ -60,20 +60,27 @@ int main(int argc, char* argv[]) {
         if (!getline(input, start)) break;
 
         graph.connectMovies(graph.actorList[start]);
-        vector<vector<string>*> data = graph.getData();
-        for(unsigned int i = 0; i < data.size() && (int)i < numDegree; ++i) {
+        vector<vector<ActorNode*>*> data = graph.getData();
+        for(unsigned int i = 1; i < data.size() && (int)i <= numDegree; ++i) {
             output << "degree " << i << endl;
             unordered_map<string, bool> hashtable;
             for(unsigned int j = 0; j < data[i]->size(); ++j) {
-                auto find = hashtable.find(data[i]->at(j));
+                auto find = hashtable.find(data[i]->at(j)->prevEdge);
                 if(find != hashtable.end()) {
                     continue;
                 }
-                output << "\t" << data[i]->at(j) << endl;
-                hashtable[data[i]->at(j)] = true;
+                output << "\t" << data[i]->at(j)->name << "\t" << data[i]->at(j)->prevEdge << endl;
+                hashtable[data[i]->at(j)->prevEdge] = true;
             }
             output << "size " << data[i]->size() << endl << endl;
         }
+
+        for(int i = data.size() - 1; i >= 0; --i) {
+            delete(data[i]);
+        }
     }
+
+    input.close();
+    output.close();
     return 1;
 }

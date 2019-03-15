@@ -26,7 +26,7 @@ using namespace std;
 class ActorNodePtrComp {
 public:
     bool operator()(ActorNode *& lhs, ActorNode *& rhs) {
-        return lhs->minWeight < rhs->minWeight;
+        return lhs->minWeight > rhs->minWeight;
     }
 };
 
@@ -47,7 +47,7 @@ public:
 
     /* insertLine from file into graph */
     void insertLine(string actor, string movie, string year) {
-        string movieYear = movie + '\t' + year;
+        string movieYear = movie + " " + year;
 
         unordered_map<string, ActorNode*>::iterator node;
         node = actorList.find(actor);
@@ -146,9 +146,9 @@ public:
     }
 
     /* gets data after Prim's */
-    vector<vector<string>*> getData() {
+    vector<vector<ActorNode*>*> getData() {
         //base case 
-        vector<vector<string>*> ret;
+        vector<vector<ActorNode*>*> ret;
 
         //init fields 
         for(auto iter = actorList.begin(); iter != actorList.end(); iter++) {
@@ -165,36 +165,40 @@ public:
     }
 
     /* helper to set degree from start */
-    int setDegree(ActorNode * node, vector<vector<string>*> & ret) {
+    int setDegree(ActorNode * node, vector<vector<ActorNode*>*> & ret) {
+        //if start node
         if(node->prev == nullptr) {
             return -1;
         }
+        //if already found
         if(node->done) {
             return -1;
         }
+
+        //get path to start
         ActorNode * curr = node;
         int dist = 0;
         vector<ActorNode *> path;
         path.push_back(curr);
-        //cout << "searching for " << node->name << endl;
-        while(curr->prev) {
+        while(curr->prev) { 
             curr = curr->prev;
-            //cout << curr->name << "->";
             path.push_back(curr);
             dist++;
         }
 
-        //cout << endl; //TODO
+        //path_compression-like function to set degrees 
         for(int i = 0; i < dist; ++i) {
             if(path[i]->done) continue;
             path[i]->done = true;
             path[i]->minWeight = dist - i;
 
+            //allocate space for vector
             while(ret.size() <= (unsigned int)(dist - i)) {
-                vector<string> * empty = new vector<string>();
+                vector<ActorNode*> * empty = new vector<ActorNode*>();
                 ret.push_back(empty);
             }
-            ret[dist - i]->push_back(path[i]->prevEdge);
+
+            ret[dist - i]->push_back(path[i]);
         }
         return 1;
     }
