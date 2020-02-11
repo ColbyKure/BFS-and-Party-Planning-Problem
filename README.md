@@ -1,3 +1,5 @@
+# PARTY PLANNING PROBLEM
+
 The Party Planning Problem is best solved using the Graph data structure. 
 
 The Academy Award Planning Committee is planning a party of Actors. 
